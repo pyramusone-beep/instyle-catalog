@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Catalog Manager — Instyle Outfitters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <!-- Login -->
+  <div class="login" id="loginView" hidden>
+    <div class="card">
+      <h1>Instyle <b>Manager</b></h1>
+      <p class="sub">Owner sign-in</p>
+      <div class="banner err" id="loginErr" hidden></div>
+      <div class="field"><label>Username</label><input class="tx" id="u" autocomplete="username"></div>
+      <div class="field"><label>Password</label><input class="tx" id="p" type="password" autocomplete="current-password"></div>
+      <button class="btn primary block" id="loginBtn">Sign in</button>
+    </div>
+  </div>
+
+  <!-- Manager -->
+  <div id="managerView" hidden>
+    <header class="abar"><div class="wrap">
+      <div class="logo">Instyle <b>Manager</b></div><div class="grow"></div>
+      <span class="who" id="whoami"></span>
+      <button class="btn ghost sm" id="logoutBtn" style="color:#cdd8e8">Sign out</button>
+    </div></header>
+    <main class="wrap" id="manager"></main>
+  </div>
+
+  <div id="toast"></div>
+  <script src="/assets/admin.js"></script>
+</body>
+</html>
