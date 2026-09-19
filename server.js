@@ -169,7 +169,8 @@ app.post('/api/login', (req, res) => {
 
   const { username, password } = req.body || {};
   const hash = store.getSetting('owner_password_hash');
-  const ok = username === OWNER_USERNAME && hash && store.verifyPassword(password || '', hash);
+  const envPassword = String(process.env.OWNER_PASSWORD || '').replace(/^['"]|['"]$/g, '');
+const ok = username === OWNER_USERNAME && (envPassword ? password === envPassword : (hash && store.verifyPassword(password || '', hash)));
   if (!ok) { rec.n++; loginHits.set(ip, rec); return res.status(401).json({ error: 'Wrong username or password' }); }
 
   loginHits.delete(ip);
