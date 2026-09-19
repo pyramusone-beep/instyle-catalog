@@ -1,0 +1,36 @@
+START HERE — Instyle Outfitters Catalog (easy way)
+==================================================
+
+You only need to double-click ONE file: "Start Catalog"
+
+1) Unzip this download (double-click the .zip). You get a folder
+   called "instyle-catalog". Move it to your Desktop.
+
+2) Open the folder and double-click:  Start Catalog
+
+   • First time only: your Mac may say the file is from an
+     unidentified developer. If so, RIGHT-CLICK "Start Catalog",
+     choose "Open", then click "Open" again. You only do this once.
+
+3) What happens automatically:
+   • If you don't have Node.js yet, it opens the download page —
+     install the green "LTS" button, then double-click
+     "Start Catalog" again.
+   • It sets everything up and opens the manager in your browser.
+   • Your login (username + password) is saved in the file
+     "YOUR-LOGIN.txt" inside the folder — open it anytime.
+
+4) In the manager you can set your Messenger link, add products,
+   and create the customer link.
+
+TO STOP: close the black Terminal window that opened
+         (or press Control-C in it).
+
+TO START AGAIN LATER: just double-click "Start Catalog" again.
+
+------------------------------------------------------------------
+Note: this runs the catalog on YOUR computer only. The customer
+link works while it's running on your Mac. To give customers a
+link that works anywhere, anytime, it needs to be hosted online —
+ask Claude to walk you through that when you're ready.
+------------------------------------------------------------------
