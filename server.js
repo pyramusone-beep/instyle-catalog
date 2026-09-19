@@ -44,7 +44,11 @@ app.set('trust proxy', 1); // correct req.protocol behind a host's proxy
 /* ------------------------------------------------------------------ */
 const OWNER_USERNAME = String(process.env.OWNER_USERNAME || store.getSetting('owner_username') || 'owner').trim().replace(/^['"]|['"]$/g, '');
 store.setSetting('owner_username', OWNER_USERNAME);
-
+console.log('AUTH CHECK:', {
+  username: OWNER_USERNAME,
+  passwordSet: !!process.env.OWNER_PASSWORD,
+  passwordLength: String(process.env.OWNER_PASSWORD || '').replace(/^['"]|['"]$/g, '').length
+});
 // Password: env wins (re-hashed on every boot); else use stored hash; else generate.
 if (process.env.OWNER_PASSWORD) {
   store.setSetting('owner_password_hash', store.hashPassword(process.env.OWNER_PASSWORD));
