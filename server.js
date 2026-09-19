@@ -33,6 +33,7 @@ const crypto = require('crypto');
 
 const express = require('express');
 const store = require('./db');
+const { cleanCredential, credentialsMatch } = require('./auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -42,16 +43,14 @@ app.set('trust proxy', 1); // correct req.protocol behind a host's proxy
 /* ------------------------------------------------------------------ */
 /* Owner credential + session secret (bootstrapped once, at startup)   */
 /* ------------------------------------------------------------------ */
-const OWNER_USERNAME = String(process.env.OWNER_USERNAME || store.getSetting('owner_username') || 'owner').trim().replace(/^['"]|['"]$/g, '');
+const OWNER_USERNAME = cleanCredential(
+  process.env.OWNER_USERNAME || store.getSetting('owner_username') || 'owner'
+);
+const OWNER_PASSWORD = cleanCredential(process.env.OWNER_PASSWORD);
 store.setSetting('owner_username', OWNER_USERNAME);
-console.log('AUTH CHECK:', {
-  username: OWNER_USERNAME,
-  passwordSet: !!process.env.OWNER_PASSWORD,
-  passwordLength: String(process.env.OWNER_PASSWORD || '').replace(/^['"]|['"]$/g, '').length
-});
 // Password: env wins (re-hashed on every boot); else use stored hash; else generate.
-if (process.env.OWNER_PASSWORD) {
-  store.setSetting('owner_password_hash', store.hashPassword(process.env.OWNER_PASSWORD));
+if (OWNER_PASSWORD) {
+  store.setSetting('owner_password_hash', store.hashPassword(OWNER_PASSWORD));
 } else if (!store.getSetting('owner_password_hash')) {
   const generated = crypto.randomBytes(9).toString('base64url');
   store.setSetting('owner_password_hash', store.hashPassword(generated));
@@ -171,10 +170,16 @@ app.post('/api/login', (req, res) => {
   if (Date.now() - rec.t > 15 * 60 * 1000) { rec.n = 0; rec.t = Date.now(); }
   if (rec.n >= 10) return res.status(429).json({ error: 'Too many attempts. Wait a few minutes.' });
 
-  const { username, password } = req.body || {};
+  const username = String(req.body && req.body.username || '').trim();
+  const password = String(req.body && req.body.password || '');
   const hash = store.getSetting('owner_password_hash');
-  const envPassword = String(process.env.OWNER_PASSWORD || '').replace(/^['"]|['"]$/g, '');
-const ok = username === OWNER_USERNAME && (envPassword ? password === envPassword : (hash && store.verifyPassword(password || '', hash)));
+  const ok = credentialsMatch({
+    submittedUsername: username,
+    submittedPassword: password,
+    ownerUsername: OWNER_USERNAME,
+    passwordHash: hash,
+    verifyPassword: store.verifyPassword
+  });
   if (!ok) { rec.n++; loginHits.set(ip, rec); return res.status(401).json({ error: 'Wrong username or password' }); }
 
   loginHits.delete(ip);
