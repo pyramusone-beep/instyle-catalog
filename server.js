@@ -42,10 +42,8 @@ app.set('trust proxy', 1); // correct req.protocol behind a host's proxy
 
 /* ------------------------------------------------------------------ */
 /* Owner credential + session secret (bootstrapped once, at startup)   */
-/* ------------------------------------------------------------------ */
-const OWNER_USERNAME = cleanCredential(
-  process.env.OWNER_USERNAME || store.getSetting('owner_username') || 'owner'
-);
+const OWNER_USERNAME = 'owner';
+
 const OWNER_PASSWORD = cleanCredential(process.env.OWNER_PASSWORD);
 store.setSetting('owner_username', OWNER_USERNAME);
 // Password: env wins (re-hashed on every boot); else use stored hash; else generate.
